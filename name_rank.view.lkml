@@ -44,6 +44,10 @@ view: name_rank {
     dimension: name_rank_gender {
       type: number
     }
+    measure: min_rank_gender_year {
+      type: min
+      sql: ${name_rank_year_gender} ;;
+    }
     dimension: name_rank_year_gender {
       type: number
     }
@@ -63,3 +67,24 @@ view: name_rank {
 }
 
 explore: name_rank {}
+
+
+view: min_name_rank {
+  derived_table: {
+    explore_source: name_rank {
+      column: name {}
+      column: gender {}
+      column: min_rank_gender_year {}
+    }
+  }
+  dimension: pk {
+    type: string
+    primary_key: yes
+    sql: concat(${name},${gender}) ;;
+  }
+  dimension: name {}
+  dimension: gender {}
+  dimension: min_rank_gender_year {
+    type: number
+  }
+}
